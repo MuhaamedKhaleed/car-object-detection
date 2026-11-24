@@ -1,0 +1,16 @@
+{
+  "real_data": true,
+  "dataset": "Open Images validation single-car subset",
+  "source": "https://storage.googleapis.com/openimages/web/factsfigures_v7.html",
+  "selection": "first24 sorted images with exactly1 annotated car, no group/depiction; tiny development split by imageID",
+  "license": "CC BY4 annotations, image metadata CC BY2 with per-image author/landing preserved; provider no warranty",
+  "training": {
+    "validation_loss": 0.13368022441864014,
+    "validation_mae": 0.3530709743499756,
+    "validation_mean_iou": 0.03215110065754363,
+    "validation_images": 5,
+    "validation_groups": 5
+  },
+  "elapsed_seconds": 5.46,
+  "limits": "single-box regression, no negatives/multi-object mAP, image groups not scene-disjoint; resized hosted copies not originals"
+}
