@@ -7,8 +7,21 @@ uv sync --locked --extra dev --extra ml
 uv run --no-sync python scripts/real_data.py --data /path/to/prepared-source
 ```
 
-Use a source manifest prepared from the official Open Images validation boxes and image-license metadata, not an unverified mirror. Supply `--manifest /path/to/car-selected.json`. Each record needs id, box (original normalized bbox CSV row) and attribution (original metadata row). Select sorted first24 images with exactly one car label /m/0k4j and no group/depiction box. Metadata URLs: https://storage.googleapis.com/openimages/v5/validation-annotations-bbox.csv and https://storage.googleapis.com/openimages/2018_04/validation/validation-images-with-rotation.csv . The script explicitly fetches reviewed CVDF-hosted copies and records actual downloaded hashes; they differ from originals. Annotations CC BY4, image metadata CC BY2 with author/landing/license preserved, provider no warranty. No photos committed. This baseline supports one box, not multi-car scenes, negatives or mAP. Split by imageID, not certified scene-disjoint.
+Use a source manifest prepared from the official Open Images validation boxes and image-license metadata, not an unverified mirror. Supply `--manifest /path/to/car-selected.json`. Each record needs id, box (original normalized bbox CSV row) and attribution (original metadata row). Select sorted first24 images with exactly one car label /m/0k4j and no group/depiction/interior/truncated box. Metadata URLs: https://storage.googleapis.com/openimages/v5/validation-annotations-bbox.csv and https://storage.googleapis.com/openimages/2018_04/validation/validation-images-with-rotation.csv . The script explicitly fetches reviewed CVDF-hosted copies and records actual downloaded hashes; they differ from originals. Annotations CC BY4, image metadata CC BY2 with author/landing/license preserved, provider no warranty. No photos committed. This baseline supports one box, not multi-car scenes, negatives or mAP. Split by imageID, not certified scene-disjoint.
 
 ## Actual limits
 
 single-box regression, no negatives/multi-object mAP, image groups not scene-disjoint; resized hosted copies not originals
+
+## Explicit download and preparation
+
+The optional helper downloads only the documented primary-source files, checks SHA-256 and refuses an existing destination. It never runs during installation, import or tests. Source attribution/license cautions above still apply. No model/data is bundled. For an offline copy, add `--cached /path/to/source-files` with the same filenames; checksums are still required.
+
+```sh
+uv run --no-sync python scripts/fetch_real_data.py --output ./real-source
+uv run --no-sync python scripts/real_data.py --data ./real-source --manifest ./real-source/car-selected.json
+```
+
+The hashes pin the exact small development sources used here, not a permission warranty or a quality benchmark. If a source changes, the helper fails rather than silently training on different data.
+
+The original first24 run included some interior/truncated views. Visual review prompted a stricter source-metadata filter; real-data-output.json now records the rerun, still deliberately small and poor quality (mean IoU about0.0187). Lower score is reported, not hidden.
