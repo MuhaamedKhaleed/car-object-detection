@@ -76,3 +76,8 @@ The notebook formerly dropped duplicate-image boxes and its generator ignored `d
 Next work: choose a suitable real detector for multi-car/negative examples; licensed grouped train/validation/frozen test; evaluate IoU/mAP, occlusion/scale/night slices and failures. Keep unverified claims out of portfolio summaries.
 
 [Verification](docs/verification.md), [changelog](CHANGELOG.md), [copy-only presentation](docs/presentation.md). No main merge, release/tag, license change or real images/models/data publication.
+
+
+## License scope
+
+New project-owned package/engineering files use the owner's MIT default. See LICENSE and LICENSE-SCOPE.md. This is not permission to relicense historical notebooks, third-party code, datasets, models or weights. Their provenance and terms still need review. Earlier verification entries saying no license was added describe the initial pilot, not this follow-up.
