@@ -1,0 +1,21 @@
+{
+  "synthetic_only": true,
+  "scope": "invented_squares_single_box_regression_not_cars_or_multi_object_detection",
+  "quality_claim": false,
+  "result": {
+    "training": {
+      "validation_loss": 0.06029515713453293,
+      "validation_mae": 0.2454761266708374,
+      "validation_mean_iou": 1.21041687179968e-05,
+      "validation_images": 1,
+      "validation_groups": 1
+    },
+    "fractional_xyxy": [
+      0.5012049674987793,
+      0.48536455631256104,
+      0.5013737678527832,
+      0.5032913088798523
+    ],
+    "corners_ordered": true
+  }
+}
