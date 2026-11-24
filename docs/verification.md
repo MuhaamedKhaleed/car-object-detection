@@ -22,3 +22,10 @@ Hosted CI owns Docker build/run checks, no local Docker daemon claim. Multi-stag
 Typed installable src package, explicit CLI, real validation/logging/config, optionalML/dev groups and uv lock, actual tests/quality tooling, public-only CI/data-only container, truthful architecture/output and changelog, separate notebook bugfix and copy-only presentation. No stub helpers, fake history, main merge, tags, license changes or image/model/data publication.
 
 No full historical notebook/default-network training, real-car held-out quality, multi-object detection, negative-image behavior, confidence score, production inference, scene/domain independence, external test cohort, cross-platform/GPU validation or atomic artifact writes. Large defaults can exhaust RAM/time; smoke settings do not validate full-scale use. Models are not published.
+
+
+## Gap-closure follow-up (24 November 2026)
+
+The CI source now uses uv 0.13.8 and the committed transitive lock, rather than a new pip resolution of direct pins. Dependency installer caching is keyed by uv.lock. The local matching command is `uv sync --locked --extra dev --extra ml`, followed by the existing tests/quality commands. This does not cache or publish private datasets, weights or model outputs. Public-repository-only guards remain. The changed workflow's hosted outcome must be checked after publication; prior green runs do not validate a changed workflow.
+
+A complete copy-only project-focused profile README draft is appended to presentation.md. No profile account edits, main merge, PR, release or license change is implied by that text. Historical notebook/full-data/quality limitations remain open, not replaced by a passing synthetic test.
