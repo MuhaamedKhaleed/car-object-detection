@@ -86,7 +86,7 @@ def main():
         "source": "https://storage.googleapis.com/openimages/web/factsfigures_v7.html",
         "selection": (
             "first24 sorted images with exactly1 annotated car, no "
-            "group/depiction; tiny development split by imageID"
+            "group/depiction/interior/truncated; tiny development split by imageID"
         ),
         "license": (
             "CC BY4 annotations, image metadata CC BY2 with per-image "
