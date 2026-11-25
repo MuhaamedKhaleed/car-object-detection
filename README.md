@@ -2,6 +2,18 @@
 
 A strict local image/box pipeline with explicit CPU regression training. This is a **single-box baseline, not a multi-object detector**. It refuses multiple annotations for an image rather than silently deleting cars.
 
+## Real-data quickstart (about 1 minute)
+
+Needs Python 3.11 or 3.12 (the locked PyTorch/TensorFlow wheels have no 3.13+ build); `--python 3.11` makes uv fetch it. Needs internet for the first install and downloads, and roughly 2 GB of free RAM.
+
+```sh
+uv sync --python 3.11 --locked --extra detector
+uv run --no-sync python scripts/fetch_real_data.py --output ./real-source      # 24 Open Images car photos + boxes
+uv run --no-sync python scripts/fetch_detector.py --output ./detector          # pinned Apache-2.0 COCO detector
+uv run --no-sync python scripts/pretrained_demo.py --data ./real-source --model ./detector --output ./demo-out
+```
+Output: `demo-out/detections.json` and `detector-evidence.png`. On 25 Nov 2026, 21 of 24 photos had a car detected, mean best IoU 0.75. This uses a generic pretrained detector, not this repository's own model. To train the repository's single-box regression model on the same photos instead: `uv sync --python 3.11 --locked --extra dev --extra ml`, then `uv run --no-sync python scripts/real_data.py --data ./real-source --manifest ./real-source/car-selected.json --epochs 2`. That run finishes in seconds but is very weak (mean IoU about 0.02); raise `--epochs` and add photos to improve it.
+
 ## Install and invented demo
 
 Python3.11/3.12, Linuxx86_64, uv installed:
