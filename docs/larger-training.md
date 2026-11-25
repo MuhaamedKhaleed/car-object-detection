@@ -27,14 +27,17 @@ command are recorded; they are kept separate and differ:
 | training mean-box development IoU | 0.6212 | 0.6212 |
 | elapsed | 670.5 s | 336.15 s |
 
-The difference between the two runs is not explained. Development mean IoU
+Both runs were confirmed on CPU from the session logs (no GPU listed). The difference between the two runs is not explained. Development mean IoU
 per epoch moved from about 0.003 (epoch 1) to 0.634 (epoch 30) in the second
 run, with its best (0.6616) at epoch 29.
 
 Outputs: `report.json`, `best.keras`, `training-evidence.png` (development
 photos with annotation and predicted boxes). Evidence status: the second run
 was saved through the notebook's durable Output, which holds `best.keras`,
-`report.json` and the grids. A fresh public-branch reload of that
+`report.json` and the grids. The second run's `best.keras` is 6,458,304 bytes, sha256
+`3d9d6f79f30e426d6cde43801eb8981dc9416bfd879626808fec85a327bddadd`, checked on the
+mounted Output. Direct binary downloads of the Output were not available, so
+an outsider reruns the script. A fresh public-branch reload of that
 `best.keras` through the repository's own predict route ran on Kaggle CPU
 with exit code 0 and gave IoU 0.9449 on one development sample image. That
 is a single example, not a benchmark. The first run's saved version kept only
