@@ -82,3 +82,15 @@ def train(
         )
 
     run(action)
+
+
+@app.command()
+def predict(image: Path, model: Path) -> None:
+    """Predict one car box from an explicit trusted local trained artifact."""
+
+    def action() -> dict[str, Any]:
+        from .model import predict as infer
+
+        return infer(image, model)
+
+    run(action)
