@@ -73,7 +73,7 @@ Typer CLI -> JSON output / separate stderr errors
 
 The notebook formerly dropped duplicate-image boxes and its generator ignored `df`/`path` arguments, sampling the global training frame/table instead. These fixes are separate from package additions. Coordinate categorical accuracy was replaced by MAE. Outputs cleared, online Colab upload/unzip disabled. **Full notebook remains unrerun**, with historical callers still requiring explicit generator arguments. The CLI is the supported verified path.
 
-Next work: choose a suitable real detector for multi-car/negative examples; licensed grouped train/validation/frozen test; evaluate IoU/mAP, occlusion/scale/night slices and failures. Keep unverified claims out of portfolio summaries.
+Next work: evaluate the pretrained detector on a licensed grouped train/validation/frozen test with mAP, occlusion/scale/night slices and failures; multi-car and negative examples remain out of scope for the regression baseline. Keep unverified claims out of portfolio summaries.
 
 [Verification](docs/verification.md), [changelog](CHANGELOG.md), [copy-only presentation](docs/presentation.md). No main merge, release/tag, license change or real images/models/data publication.
 
@@ -102,3 +102,11 @@ See [quality experiments, results and limits](docs/quality-cpu.md). These go bey
 ## Reliability follow-up
 
 See [new ordinary-use safeguards and limits](docs/fix-pass.md). Model-quality scores are unchanged.
+
+## Pretrained detector demo
+
+See [pinned pretrained detector on the licensed car photos](docs/pretrained-detector.md): hustvl/yolos-tiny (Apache-2.0, pinned revision, SHA-256 checked) detects cars on the same Open Images photos, 21/24 images with a car found and mean best-car IoU0.7484 vs annotations in the recorded run. A separate baseline, not this repository's regression model. No weights, photos or data committed.
+
+## Larger training run
+
+`scripts/quality_gpu.py` extends the real-data route to 500 single-car photos with best-development tracking against the training-mean box baseline, for free Kaggle/Colab runtimes on CPU or GPU. See [larger training results and limits](docs/larger-training.md).
