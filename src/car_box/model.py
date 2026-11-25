@@ -109,3 +109,51 @@ def train(
     model.save(output / "model.keras")
     (output / "validation.json").write_text(json.dumps(result))
     return result
+
+
+def predict(image: Path, artifact: Path) -> dict[str, Any]:
+    """Return one box in original-image pixels, never multiple-car detection."""
+    import numpy as np
+    from PIL import Image
+
+    if artifact.suffix != ".keras" or not artifact.is_file():
+        raise ValueError("Supply a trusted local .keras artifact.")
+    tf = backend()
+    model = tf.keras.models.load_model(artifact, safe_mode=True, compile=False)
+    shape = model.input_shape
+    if (
+        len(shape) != 4
+        or shape[-1] != 3
+        or model.output_shape != (None, 4)
+        or not isinstance(shape[1], int)
+        or not isinstance(shape[2], int)
+    ):
+        raise ValueError("Expected fixed-size RGB model with four outputs.")
+    with Image.open(image) as source:
+        width, height = source.size
+        pixels = (
+            np.asarray(
+                source.convert("RGB").resize(
+                    (shape[2], shape[1]), Image.Resampling.BILINEAR
+                ),
+                dtype=np.float32,
+            )
+            / 255
+        )
+    box = np.asarray(model(pixels[None], training=False)).reshape(-1)
+    if (
+        box.shape != (4,)
+        or not np.isfinite(box).all()
+        or np.any(box < 0)
+        or np.any(box > 1)
+        or box[0] >= box[2]
+        or box[1] >= box[3]
+    ):
+        raise ValueError("Model produced invalid box; no box emitted.")
+    return {
+        "xyxy": (box * [width, height, width, height]).tolist(),
+        "image_size": [width, height],
+        "warning": (
+            "One-box regression only. Not confidence, class or multiple-car detection."
+        ),
+    }
