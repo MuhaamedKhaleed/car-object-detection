@@ -29,9 +29,12 @@ outsider running the documented commands gets these outputs:
 
 Development mean IoU per epoch moved 0.003 (epoch 1) to 0.636 (epoch 30),
 crossing the mean-box baseline between epochs 25 and 30. Outputs:
-`report.json`, `checkpoint.pt`, `training-evidence.png` (development photos
-with annotation and predicted boxes). The Kaggle notebook is saved as a
-private version with these outputs attached.
+`report.json`, `best.keras`, `training-evidence.png` (development photos
+with annotation and predicted boxes). Evidence status: the notebook's saved
+private version preserves the rendered cell outputs (printed report and
+grids); the raw output files are not attached to that version, and a
+durable-artifact save plus a reload-and-predict check of `best.keras`
+through the repository's own predict route is still open.
 
 ## Data and rights
 
