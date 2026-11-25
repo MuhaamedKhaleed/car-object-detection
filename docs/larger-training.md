@@ -14,27 +14,31 @@ selects the best checkpoint (no untouched test set).
 
 ## Verified result
 
-Run 2026-11-25 on a free Kaggle CPU session (no accelerator attached;
-TensorFlow 2.21.0, torch 2.11.0+cpu, transformers 5.20.2, Python 3.13.16)
-from a fresh `git clone --depth 1 --branch car-engineering-pilot`, so an
-outsider running the documented commands gets these outputs:
+Runs on 2026-11-25 on a free Kaggle CPU session (TensorFlow 2.21.0, torch
+2.11.0+cpu, transformers 5.20.2, Python 3.13.16) from a fresh
+`git clone --depth 1 --branch car-engineering-pilot`. Two runs of the same
+command are recorded; they are kept separate and differ:
 
-| metric | value |
-| --- | --- |
-| images | 500 (400 train / 100 development) |
-| epochs | 30 |
-| best development mean IoU | 0.6462 |
-| training mean-box development IoU | 0.6212 |
-| elapsed | 670.5 s (CPU) |
+| metric | first run | second run |
+| --- | --- | --- |
+| images | 500 (400 train / 100 development) | 500 (400 train / 100 development) |
+| epochs | 30 | 30 |
+| best development mean IoU | 0.6462 | 0.6616 |
+| training mean-box development IoU | 0.6212 | 0.6212 |
+| elapsed | 670.5 s | 336.15 s |
 
-Development mean IoU per epoch moved 0.003 (epoch 1) to 0.636 (epoch 30),
-crossing the mean-box baseline between epochs 25 and 30. Outputs:
-`report.json`, `best.keras`, `training-evidence.png` (development photos
-with annotation and predicted boxes). Evidence status: the notebook's saved
-private version preserves the rendered cell outputs (printed report and
-grids); the raw output files are not attached to that version, and a
-durable-artifact save plus a reload-and-predict check of `best.keras`
-through the repository's own predict route is still open.
+The difference between the two runs is not explained. Development mean IoU
+per epoch moved from about 0.003 (epoch 1) to 0.634 (epoch 30) in the second
+run, with its best (0.6616) at epoch 29.
+
+Outputs: `report.json`, `best.keras`, `training-evidence.png` (development
+photos with annotation and predicted boxes). Evidence status: the second run
+was saved through the notebook's durable Output, which holds `best.keras`,
+`report.json` and the grids. A fresh public-branch reload of that
+`best.keras` through the repository's own predict route ran on Kaggle CPU
+with exit code 0 and gave IoU 0.9449 on one development sample image. That
+is a single example, not a benchmark. The first run's saved version kept only
+the rendered report and grids.
 
 ## Data and rights
 
@@ -47,5 +51,5 @@ run time; no images, weights or checkpoints are committed.
 
 Single-box regression; split is by imageID, not scene-disjoint; hosted
 resized copies are used, not originals; development-selected best with no
-held-out test, so 0.6462 is an optimistic engineering signal, not a
+held-out test, so 0.6462 and 0.6616 are optimistic engineering signals, not a
 generalization estimate.
