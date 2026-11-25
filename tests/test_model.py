@@ -67,3 +67,31 @@ def test_actual_small_stack_train_save_reload(tmp_path: Path) -> None:
 def test_bad_model(args: tuple[int, int, int, int]) -> None:
     with pytest.raises(ValueError):
         build(*args)
+
+
+def test_predict_original_pixels_and_bad_corners(tmp_path: Path) -> None:
+    from car_box.model import predict
+
+    image = tmp_path / "car.png"
+    Image.new("RGB", (100, 60)).save(image)
+    inputs = tf.keras.layers.Input((32, 32, 3))
+    x = tf.keras.layers.GlobalAveragePooling2D()(inputs)
+    outputs = tf.keras.layers.Dense(
+        4,
+        activation="sigmoid",
+        kernel_initializer="zeros",
+        bias_initializer=tf.keras.initializers.Constant([-1.0, -1.0, 1.0, 1.0]),
+    )(x)
+    model = tf.keras.Model(inputs, outputs)
+    artifact = tmp_path / "model.keras"
+    model.save(artifact)
+    result = predict(image, artifact)
+    assert result["image_size"] == [100, 60]
+    assert result["xyxy"] == pytest.approx([26.894, 16.136, 73.106, 43.864], abs=0.001)
+    response = CliRunner().invoke(app, ["predict", str(image), str(artifact)])
+    assert response.exit_code == 0, response.output
+    assert json.loads(response.output) == result
+    model.layers[-1].bias.assign([1.0, 1.0, -1.0, -1.0])
+    model.save(artifact)
+    with pytest.raises(ValueError, match="invalid box"):
+        predict(image, artifact)
