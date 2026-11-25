@@ -53,7 +53,7 @@ def main():
         b = r["box"]
         manifest.append(
             [
-                str(f),
+                f.name,
                 float(b["XMin"]) * w,
                 float(b["YMin"]) * h,
                 float(b["XMax"]) * w,
