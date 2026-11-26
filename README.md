@@ -32,7 +32,7 @@ Actual output:
 {"images": 3, "train_images": 2, "validation_images": 1, "groups": 3}
 ```
 
-Demo images are invented squares, not cars. The script refuses an existing demo folder. No dataset, pretrained weights, secret, zip extraction or download is included. `--config` explicitly reads `BOX_CSV` from a selected dotenv file; `--data` wins.
+Demo images are invented squares, not cars. The script refuses an existing demo folder. No dataset, weights or secret is committed; downloads happen only when you run the `scripts/fetch_*` helpers. `--config` explicitly reads `BOX_CSV` from a selected dotenv file; `--data` wins.
 
 ## Annotation contract
 
@@ -49,7 +49,7 @@ TF_CPP_MIN_LOG_LEVEL=3 TF_NUM_INTRAOP_THREADS=1 TF_NUM_INTEROP_THREADS=1 OMP_NUM
 
 This exact small synthetic command was run. It saves local `model.keras` and `validation.json`, never overwrites an existing directory or starts cloud compute. Default input380x676, depth10, filters8 preserve the original convolution/BatchNorm/pooling stack and dense256/32 head; **the original default network is extremely large** and was not fully trained. Smoke tests reduce input/depth/width explicitly, not a claim of equivalent model quality. CPU-only. Real default training needs a separate resource decision.
 
-Four independent sigmoid coordinates stay within [0,1] but can be misordered. Invalid predicted corner order counts as IoU0. Mean pair IoU, normalized-coordinate MSE and MAE are reported, not object-detection mAP, precision, recall or car-recognition accuracy. No real car dataset, held-out quality or default-network convergence was evaluated. There is no production inference service.
+Four independent sigmoid coordinates stay within [0,1] but can be misordered. Invalid predicted corner order counts as IoU0. Mean pair IoU, normalized-coordinate MSE and MAE are reported, not object-detection mAP, precision, recall or car-recognition accuracy. For this regression model, no held-out quality or default-network convergence was evaluated; the real-photo runs are in `docs/real-data.md` and `docs/larger-training.md`. There is no production inference service.
 
 ## Checks
 
@@ -72,7 +72,7 @@ docker run --rm car-box:ci --help
 docker run --rm -v "$PWD/synthetic-demo:/data:ro" car-box:ci check-data --data /data/boxes.csv
 ```
 
-Multi-stage slim non-root **data-check-only** runtime, no TensorFlow/dev packages. Hosted CI runs build and help/mounted CSV checks, not a local Docker-daemon claim. Public-repository-only ordinary Linux workflow, no paid API, hosted training or private billable runners. Linuxx86_64 uv lock; CI pip uses direct pins, not the complete transitive lock. GPU/Windows/macOS/ARM not verified.
+Multi-stage slim non-root **data-check-only** runtime, no TensorFlow/dev packages. Hosted CI runs the Docker build and help/mounted CSV checks. Public-repository-only ordinary Linux workflow, no paid API, hosted training or private billable runners. Linuxx86_64 uv lock; CI pip uses direct pins, not the complete transitive lock. GPU/Windows/macOS/ARM not verified.
 
 ## Structure and historical fixes
 
@@ -87,7 +87,7 @@ The notebook formerly dropped duplicate-image boxes and its generator ignored `d
 
 Next work: evaluate the pretrained detector on a licensed grouped train/validation/frozen test with mAP, occlusion/scale/night slices and failures; multi-car and negative examples remain out of scope for the regression baseline. Keep unverified claims out of portfolio summaries.
 
-[Verification](docs/verification.md), [changelog](CHANGELOG.md), [copy-only presentation](docs/presentation.md). No main merge, release/tag, license change or real images/models/data publication.
+[Verification](docs/verification.md), [changelog](CHANGELOG.md), [copy-only presentation](docs/presentation.md). No release/tag; no real images, models or data are published.
 
 
 ## License scope
